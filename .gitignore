@@ -169,3 +169,19 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Docker
+*.log
+*.env
+docker-compose.override.yml
+**/*.db
+**/*.pyc
+
+# Virtual environments
+venv/
+.env/
+.venv/
+.venv/*
+
+# Volume Database
+ApiRestDjango/database/postgres/data/
