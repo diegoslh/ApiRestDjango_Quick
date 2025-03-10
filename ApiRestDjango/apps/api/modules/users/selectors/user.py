@@ -5,7 +5,6 @@ from modules.users.models.user import User
 class UserSelector:
 
     def get_all_users() -> QuerySet[User]:
-        # return User.objects.filter(active=True).order_by("-id")
         return (
             User.objects.filter(active=True)
             .select_related("restaurant_id")
