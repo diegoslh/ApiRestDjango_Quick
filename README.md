@@ -1,5 +1,3 @@
-Aquí tienes un ejemplo de un `README.md` para inicializar un proyecto hecho con Django Rest Framework (DRF), PostgreSQL y orquestado con Docker Compose. Está enfocado principalmente en un entorno Windows, pero los pasos generales también sirven para Linux y Ubuntu.
-
 ---
 
 # Proyecto DRF con PostgreSQL Orquestado con Docker Compose
