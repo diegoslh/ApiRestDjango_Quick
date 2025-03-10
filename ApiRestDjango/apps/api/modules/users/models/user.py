@@ -1,7 +1,6 @@
 from django.db import models
 from modules.shared.models.basicModel import basicModel
 from modules.restaurants.models.restaurant import Restaurant
-from cryptography.fernet import Fernet
 
 
 class User(basicModel):
@@ -18,11 +17,6 @@ class User(basicModel):
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(max_length=20)
     default_address = models.TextField()
-
-
-# Clave para encriptar/desencriptar
-new_key = Fernet.generate_key()
-ciphered = Fernet(new_key)
 
 
 class UserCredentials(basicModel):

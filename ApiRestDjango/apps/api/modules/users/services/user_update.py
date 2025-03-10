@@ -15,13 +15,20 @@ class UserUpdateService(UserValidateService):
         try:
             with transaction.atomic():
                 self._validate_data()
+
                 id_user = self.data.pop("id")
                 password = self.data.pop("password")
-                encrypted_password = EncryptionService.encrypt_password(password)
-                user: User = User.objects.filter(id=id_user).update(**self.data)
-                UserCredentials.objects.filter(user_id=user).update(
-                    password=encrypted_password
-                )
+
+                user: User = User.objects.get(id=id_user)
+                for key, value in self.data.items():
+                    setattr(user, key, value)
+                user.save()
+
+                if password:
+                    encrypted_password = EncryptionService.encrypt_password(password)
+                    UserCredentials.objects.filter(user_id=user).update(
+                        password=encrypted_password
+                    )
                 return user
         except Exception as e:
             raise ValidationError(str(e))

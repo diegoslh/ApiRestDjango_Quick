@@ -27,7 +27,7 @@ class UserCreateSerializer(UserSerializer):
 
 class UserUpdateSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=True)
-    typology = serializers.CharField(max_length=10)
+    typology = serializers.CharField(max_length=10, required=False)
     restaurant_id = serializers.PrimaryKeyRelatedField(
         queryset=Restaurant.objects.all(), required=False
     )
