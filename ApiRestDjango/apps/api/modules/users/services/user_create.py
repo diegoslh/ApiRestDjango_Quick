@@ -11,17 +11,15 @@ class UserCreateService(UserValidateService):
     def __init__(self: Self, *, data: dict):
         super().__init__(data=data)
 
+    @transaction.atomic
     def create(self: Self) -> User:
         try:
-            with transaction.atomic():
-                self._validate_data()
-                password = self.data.pop("password")
-                encrypted_password = EncryptionService.encrypt_password(password)
-                user: User = User.objects.create(**self.data)
-                UserCredentials.objects.create(
-                    user_id=user, password=encrypted_password
-                )
-                return user
+            self._validate_data()
+            password = self.data.pop("password")
+            encrypted_password = EncryptionService.encrypt_password(password)
+            user: User = User.objects.create(**self.data)
+            UserCredentials.objects.create(user_id=user, password=encrypted_password)
+            return user
 
         except Exception as e:
             raise ValidationError(str(e))
