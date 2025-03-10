@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-@t3^8#95l*c48w=7h(wf36l+j+fe1n%)zqgm5liim%7p4jxb*@'
-
+ENCRYPTION_KEY = "a7cB1-xYsdfK3QhZUIbN8f8-Kp5X6zQfLPK5Fz93kGc="
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -32,6 +32,7 @@ LOCAL_APPS = [
     'modules.users',
     'modules.orders',
     'modules.restaurants',
+    'modules.authentication'
 ]
 
 THIRD_APPS = [

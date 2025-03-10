@@ -19,7 +19,7 @@ Including another URLconf
 from django.urls import path, include
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
+    path("api/", include("modules.authentication.urls")),
     path("api/", include("modules.restaurants.urls")),
     path("api/", include("modules.menus.urls")),
     path("api/", include("modules.users.urls")),

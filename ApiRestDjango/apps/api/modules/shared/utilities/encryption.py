@@ -2,10 +2,8 @@ from cryptography.fernet import Fernet
 from django.conf import settings
 
 # Generar una clave de cifrado
-# new_key = Fernet.generate_key()
 key = settings.ENCRYPTION_KEY.encode()
 ciphered = Fernet(key)
-print(key)
 
 
 class EncryptionService:
