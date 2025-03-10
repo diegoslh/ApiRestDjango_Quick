@@ -37,6 +37,7 @@ class LoginService:
         payload: dict = {
             "user_id": user_data["id"],
             "username": user_data["email"],
+            "typology": user_data["typology"],
             "exp": datetime.datetime.now(tz=datetime.timezone.utc)
             + datetime.timedelta(hours=5),
         }

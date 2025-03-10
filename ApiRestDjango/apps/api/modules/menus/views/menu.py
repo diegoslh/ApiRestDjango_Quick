@@ -14,11 +14,13 @@ from modules.menus.serializers.menu import (
     MenuItemsSerializer,
     MenuItemsUpdateSerializer,
 )
+from modules.authentication.services.validate_token import validate_token
 
 
 class MenuAPIView(APIView):
 
     def get(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         queryset: QuerySet = MenuSelector.get_all_menus()
         filters: QuerySet[MenuItems] = MenuItemsFilter(
             request.query_params, queryset=queryset
@@ -27,6 +29,7 @@ class MenuAPIView(APIView):
         return response_paginate(request=request, data=serializer)
 
     def post(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         serializer: MenuItemsSerializer = MenuItemsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         MenuItemsCreateService(data=serializer.validated_data).create()
@@ -36,6 +39,7 @@ class MenuAPIView(APIView):
         )
 
     def patch(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         menu_id = request.query_params.get("id")
         data = {"id": menu_id, **request.data}
         serializer = MenuItemsUpdateSerializer(data=data)
@@ -47,6 +51,7 @@ class MenuAPIView(APIView):
         )
 
     def delete(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         menu_id = request.query_params.get("id")
         MenuItemsUpdateService(data={"id": menu_id}).inactivate()
         return Response(

@@ -15,17 +15,20 @@ from modules.users.serializers.user import (
 )
 from modules.users.services.user_create import UserCreateService
 from modules.users.services.user_update import UserUpdateService
+from modules.authentication.services.validate_token import validate_token
 
 
 class UserAPIView(APIView):
 
     def get(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         queryset: QuerySet = UserSelector.get_all_users()
         filters: QuerySet[User] = UserFilter(request.query_params, queryset=queryset).qs
         serializer = UserSerializer(filters, many=True).data
         return response_paginate(request=request, data=serializer)
 
     def post(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         serializer: UserCreateSerializer = UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         UserCreateService(data=serializer.validated_data).create()
@@ -35,6 +38,7 @@ class UserAPIView(APIView):
         )
 
     def patch(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         menu_id = request.query_params.get("id")
         data = {"id": menu_id, **request.data}
         serializer = UserUpdateSerializer(data=data)
@@ -46,6 +50,7 @@ class UserAPIView(APIView):
         )
 
     def delete(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         menu_id = request.query_params.get("id")
         UserUpdateService(data={"id": menu_id}).inactivate()
         return Response(

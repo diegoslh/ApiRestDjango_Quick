@@ -15,11 +15,13 @@ from modules.restaurants.serializers.restaurant import (
 )
 from modules.restaurants.services.restaurant_create import RestaurantCreateService
 from modules.restaurants.services.restaurant_update import RestaurantUpdateService
+from modules.authentication.services.validate_token import validate_token
 
 
 class RestaurantAPIView(APIView):
 
     def get(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         queryset: QuerySet = RestaurantSelector.get_all_restaurants()
         filters: QuerySet[Restaurant] = RestaurantFilter(
             request.query_params, queryset=queryset
@@ -28,6 +30,7 @@ class RestaurantAPIView(APIView):
         return response_paginate(request=request, data=serializer)
 
     def post(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         serializer: RestaurantSerializer = RestaurantSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         RestaurantCreateService(data=serializer.validated_data).create()
@@ -37,6 +40,7 @@ class RestaurantAPIView(APIView):
         )
 
     def patch(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         restaurant_id = request.query_params.get("id")
         data = {"id": restaurant_id, **request.data}
         serializer = RestaurantUpdateSerializer(data=data)
@@ -48,6 +52,7 @@ class RestaurantAPIView(APIView):
         )
 
     def delete(self: Self, request: Request) -> Response:
+        validate_token(request=request)
         restaurant_id = request.query_params.get("id")
         RestaurantUpdateService(data={"id": restaurant_id}).inactivate()
         return Response(
